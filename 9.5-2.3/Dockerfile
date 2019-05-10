@@ -6,6 +6,7 @@ ENV POSTGIS_VERSION 2.3.3+dfsg-1.pgdg90+1
 
 RUN apt-get update \
       && apt-get install -y wget \
+            apt-utils \
       && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
       && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
       && apt-get update \
@@ -13,7 +14,7 @@ RUN apt-get update \
       && apt-get install -y --no-install-recommends \
            postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR \
            postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts \
-           postgis=$POSTGIS_VERSION \
+           postgis \
       && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /docker-entrypoint-initdb.d
