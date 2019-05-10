@@ -30,5 +30,5 @@ deploy:
   provider: script
   script:
     # push to dockerhub
-    docker push tmanubrio/postgis:$VERSION";
+    docker push "$image";
   branch: master
