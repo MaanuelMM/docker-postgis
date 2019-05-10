@@ -1,8 +1,8 @@
-FROM postgres:11-alpine
-MAINTAINER Régis Belson <me@regisbelson.fr>
+FROM postgres:9.2-alpine
+LABEL maintainer="tmanubrio@gmail.com"
 
-ENV POSTGIS_VERSION 2.5.2
-ENV POSTGIS_SHA256 225aeaece00a1a6a9af15526af81bef2af27f4c198de820af1367a792ee1d1a9
+ENV POSTGIS_VERSION 2.3.3
+ENV POSTGIS_SHA256 3403d5635b4b86c90f6a225a366a515c6bc734d1bad625c7df4e8c6fde7e8588
 
 RUN set -ex \
     \
