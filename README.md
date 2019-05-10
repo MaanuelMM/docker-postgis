@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/MaanuelMM/docker-postgis.svg)](https://travis-ci.org/MaanuelMM/docker-postgis)
 
-The `maanuelmm/postgis` image provides a Docker container running Postgres with [PostGIS 2.3](http://postgis.net/) installed. This image is based on the official [`postgres`](https://registry.hub.docker.com/_/postgres/) image and provides variants for each version of Postgres 9 supported by the base image (9.2-9.6).
+The `maanuelmm/postgis` image provides a Docker container running Postgres with [PostGIS 2.3](http://postgis.net/) installed. This image is based on the official [`postgres`](https://registry.hub.docker.com/_/postgres/) image and provides variants for each version of Postgres 9 supported by the base image (9.3-9.6).
 
 This image ensures that the default database created by the parent `postgres` image will have the following extensions installed:
 
