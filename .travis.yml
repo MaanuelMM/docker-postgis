@@ -22,7 +22,7 @@ install:
 before_script:
   - env | sort
   - cd "$VERSION/$VARIANT"
-  - image="appropriate/postgis:$VERSION${VARIANT:+-${VARIANT}}"
+  - image="MaanuelMM/postgis:$VERSION${VARIANT:+-${VARIANT}}"
 
 script:
   - docker build --pull -t "$image" .
