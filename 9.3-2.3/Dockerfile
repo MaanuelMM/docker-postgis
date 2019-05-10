@@ -5,8 +5,6 @@ ENV POSTGIS_MAJOR 2.3
 ENV POSTGIS_VERSION 2.3.1+dfsg-2
 
 RUN apt-get update \
-      && apt-get upgrade -y \
-      && apt-get autoremove -y \
       && apt-cache showpkg postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR \
       && apt-cache showpkg postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts \
       && apt-cache showpkg postgis \
