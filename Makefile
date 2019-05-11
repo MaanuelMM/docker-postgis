@@ -6,7 +6,7 @@ build: $(VERSIONS)
 
 define postgis-version
 $1:
-	docker build -t maanuelmm/postgis:$(shell echo $1 | sed -e 's/-.*//g') $1
+	docker build -t tmanubrio/postgis:$(shell echo $1 | sed -e 's/-.*//g') $1
 endef
 $(foreach version,$(VERSIONS),$(eval $(call postgis-version,$(version))))
 
