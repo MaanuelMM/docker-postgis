@@ -10,26 +10,23 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/Dockerfile}" )
 
-packagesUrl='http://apt.postgresql.org/pub/repos/apt/dists/stretch-pgdg/main/binary-amd64/Packages'
-packages="$(echo "$packagesUrl" | sed -r 's/[^a-zA-Z.-]+/-/g')"
-curl -sSL "${packagesUrl}.bz2" | bunzip2 > "$packages"
-
 travisEnv=
 for version in "${versions[@]}"; do
 	IFS=- read pg_major postgis_major <<< "$version"
 
-	fullVersion="$(grep -m1 -A10 "^Package: postgresql-$pg_major-postgis-$postgis_major\$" "$packages" | grep -m1 '^Version: ' | cut -d' ' -f2)"
-	[ -z "$fullVersion" ] && { echo >&2 "Unable to find package for PostGIS $postgis_major on Postgres $pg_major"; exit 1; }
+	# Check on "https://github.com/postgis/postgis/releases" for the latest PostGIS 2.3.x release to assign to "srcVersion" variable
+	srcVersion="2.3.9"
+	srcSha256="$(curl -sSL "https://github.com/postgis/postgis/archive/$srcVersion.tar.gz" | sha256sum | awk '{ print $1 }')"
+	jsonObjectPrivateSha256="$(curl -sSL "https://raw.githubusercontent.com/json-c/json-c/master/json_object_private.h" | sha256sum | awk '{ print $1 }')"
+
 	(
 		set -x
 		cp Dockerfile.template initdb-postgis.sh update-postgis.sh README.md "$version/"
 		mv "$version/Dockerfile.template" "$version/Dockerfile"
-		sed -i 's/%%PG_MAJOR%%/'$pg_major'/g; s/%%POSTGIS_MAJOR%%/'$postgis_major'/g; s/%%POSTGIS_VERSION%%/'$fullVersion'/g' "$version/Dockerfile"
+		sed -i 's/%%PG_MAJOR%%/'"$pg_major"'/g; s/%%POSTGIS_VERSION%%/'"$srcVersion"'/g; s/%%POSTGIS_SHA256%%/'"$srcSha256"'/g; s/%%JSON_OBJECT_PRIVATE_SHA256%%/'"$jsonObjectPrivateSha256"'/g' "$version/Dockerfile"
 	)
 
 	travisEnv='\n  - VERSION='"$version$travisEnv"
 done
 travis="$(awk -v 'RS=\n\n' '$1 == "env:" { $0 = "env:'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"
 echo "$travis" > .travis.yml
-
-rm "$packages"
